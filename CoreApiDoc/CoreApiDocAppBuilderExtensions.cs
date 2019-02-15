@@ -14,9 +14,9 @@ namespace Microsoft.AspNetCore.Builder
         /// 开启netcore api的文档自动生成
         /// </summary>
         /// <param name="app"></param>
-        /// <param name="assemby">Controller层的命名空间</param>
+        /// <param name="ControllerAssemby">Controller层的命名空间</param>
         /// <returns></returns>
-        public static IApplicationBuilder UseCoreApiDoc(this IApplicationBuilder app, string assemby)
+        public static IApplicationBuilder UseCoreApiDoc(this IApplicationBuilder app, string ControllerAssemby)
         {
             app.Map("/apidoc", lv1 =>
             {
