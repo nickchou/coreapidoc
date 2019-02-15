@@ -47,11 +47,13 @@ namespace CoreApiDoc.Web
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+            //指定Controller层的程序集，反射出API接口
+            app.UseCoreApiDoc("CoreApiDoc.Web");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
+            
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
