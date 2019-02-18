@@ -7,10 +7,10 @@ namespace CoreApiDoc.Summary
 {
     public class ClassSummary : BaseSummary
     {
-        public ClassSummary(string xmlPath)
+        public ClassSummary(string dllPath)
         {
-            xmlPath = Path.ChangeExtension(xmlPath, ".xml");
-            base.SummaryFileURI = xmlPath;
+            dllPath = Path.ChangeExtension(dllPath, ".xml");
+            base.SummaryFileURI = dllPath;
             base.SummaryType = new List<string>() { "T", "M" };
         }
     }
