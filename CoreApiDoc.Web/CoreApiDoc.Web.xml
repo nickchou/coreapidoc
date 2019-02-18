@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CoreApiDoc.Web</name>
+    </assembly>
+    <members>
+        <member name="T:CoreApiDoc.Web.Controllers.BaseBController">
+            <summary>
+            测试基类B的方法
+            </summary>
+        </member>
+        <member name="M:CoreApiDoc.Web.Controllers.BaseBController.Index">
+            <summary>
+            基类首页方法
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:CoreApiDoc.Web.Controllers.BaseController">
+            <summary>
+            测试基类BaseController的
+            </summary>
+        </member>
+        <member name="P:CoreApiDoc.Web.Controllers.BaseController.Name">
+            <summary>
+            设置名字
+            </summary>
+        </member>
+        <member name="T:CoreApiDoc.Web.Controllers.HomeController">
+            <summary>
+            默认的首页，用于默认呈现
+            </summary>
+        </member>
+        <member name="M:CoreApiDoc.Web.Controllers.HomeController.Index">
+            <summary>
+            首页方法
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreApiDoc.Web.Controllers.HomeController.About">
+            <summary>
+            关于我们的页面，用于呈现联系方式等等
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreApiDoc.Web.Controllers.HomeController.Contact">
+            <summary>
+            联系我们，主要是联系方式和地图等
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreApiDoc.Web.Controllers.HomeController.Privacy">
+            <summary>
+             测试页面
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreApiDoc.Web.Controllers.HomeController.Error">
+            <summary>
+            错误处理
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:CoreApiDoc.Web.Controllers.StuController">
+            <summary>
+            学生控制器
+            </summary>
+        </member>
+        <member name="T:CoreApiDoc.Web.Controllers.UserController">
+            <summary>
+            用户处理控制器
+            </summary>
+        </member>
+        <member name="M:CoreApiDoc.Web.Controllers.UserController.Index">
+            <summary>
+            用户处理首页
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:CoreApiDoc.Web.Models.ErrorViewModel">
+            <summary>
+            错误处理实体
+            </summary>
+        </member>
+        <member name="P:CoreApiDoc.Web.Models.ErrorViewModel.RequestId">
+            <summary>
+            请求ID
+            </summary>
+        </member>
+        <member name="P:CoreApiDoc.Web.Models.ErrorViewModel.ShowRequestId">
+            <summary>
+            显示请求ID
+            </summary>
+        </member>
+        <member name="T:CoreApiDoc.Web.Program">
+            <summary>
+            程序启动入口
+            </summary>
+        </member>
+        <member name="M:CoreApiDoc.Web.Program.Main(System.String[])">
+            <summary>
+            Main方法
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:CoreApiDoc.Web.Program.CreateWebHostBuilder(System.String[])">
+            <summary>
+            创建WebHostBuilder
+            </summary>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="T:CoreApiDoc.Web.Startup">
+            <summary>
+            启动的一些初始化
+            </summary>
+        </member>
+        <member name="M:CoreApiDoc.Web.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="P:CoreApiDoc.Web.Startup.Configuration">
+            <summary>
+            Configuration属性
+            </summary>
+        </member>
+        <member name="M:CoreApiDoc.Web.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            初始化ConfigureServices
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:CoreApiDoc.Web.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IHostingEnvironment,System.IServiceProvider)">
+            <summary>
+            初始化Configure
+            </summary>
+            <param name="app"></param>
+            <param name="env"></param>
+            <param name="provider"></param>
+        </member>
+    </members>
+</doc>

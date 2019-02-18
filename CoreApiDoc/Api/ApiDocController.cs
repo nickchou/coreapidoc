@@ -1,9 +1,14 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using CoreApiDoc.Entity;
+using CoreApiDoc.Service;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace CoreApiDoc.Api
@@ -13,12 +18,22 @@ namespace CoreApiDoc.Api
     /// </summary>
     public class ApiDocController
     {
-        public static void Index(IApplicationBuilder app)
+        /// <summary>
+        /// 控制器程序集名称，用于反射API接口
+        /// </summary>
+        public List<string> CtrlAssembys { set; get; } = new List<string>();
+
+        #region ApiDoc默认页面
+        /// <summary>
+        /// ApiDoc默认页面
+        /// </summary>
+        /// <param name="app"></param>
+        public void Index(IApplicationBuilder app)
         {
             app.Run(async context =>
             {
                 string html = "";
-                System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+                Assembly assembly = Assembly.GetExecutingAssembly();
                 string strName = assembly.GetName().Name + ".Pages.index.html";
                 using (Stream htmlStream = assembly.GetManifestResourceStream(strName))
                 {
@@ -32,39 +47,68 @@ namespace CoreApiDoc.Api
                     else
                     {
                         html = @"<html><head><title>CoreApiDoc Error</title></head>
-                                <body>
-                                    <div style='color:red;'>CoreApiDoc Load Page Error</div>
-                                </body>
-                            </html>";
+                                <body> <div style='color:red;'>CoreApiDoc Load Page Error</div></body>
+                                </html>";
                     }
                 }
                 context.Response.ContentType = "text/html;charset=utf-8";
                 await context.Response.WriteAsync(html);
             });
         }
-        public static void AA(IApplicationBuilder app)
+        #endregion
+
+        #region 获取API跟路径
+        public void GetPath(IApplicationBuilder app)
         {
             app.Run(async context =>
             {
-                string html = "Action";
-
-                context.Response.ContentType = "text/html;charset=utf-8";
-                await context.Response.WriteAsync(html);
+                HttpRequest req = context.Request;
+                string str = $"{req.Scheme}://{req.Host}{req.PathBase}";
+                context.Response.ContentType = "text/html";
+                await context.Response.WriteAsync(str);
             });
         }
+        #endregion
+        
+        #region 获取API接口列表
+        /// <summary>
+        /// 获取API接口列表
+        /// </summary>
+        /// <param name="app"></param>
+        public void GetApi(IApplicationBuilder app)
+        {
+            app.Run(async context =>
+            {
+                HttpRequest req = context.Request;
+                List<string> asbs = new List<string>();
+                if (context.Request.Query["asb"].FirstOrDefault() != null)
+                {
+                    string[] ss = context.Request.Query["asb"].FirstOrDefault().Split(',');
+                    foreach (var item in ss)
+                    {
+                        asbs.Add(item);
+                    }
+                }
+                else
+                {
+                    asbs = CtrlAssembys;
+                }
+                List<ApiLib> apis = new List<ApiLib>();
+                ControllerService service = new ControllerService();
+                foreach (var ctrl in asbs)
+                {
+                    //根据程序集命名空间加载所有的API接口
+                    ApiLib apiLib = service.GetApis(ctrl);
+                    if (apiLib != null && !string.IsNullOrEmpty(apiLib.NameSpace))
+                    {
+                        apis.Add(apiLib);
+                    }
+                }
+                string strJson = JsonConvert.SerializeObject(apis);
+                context.Response.ContentType = "text/json;charset=utf-8";
+                await context.Response.WriteAsync(strJson);
+            });
+        }
+        #endregion
     }
-    //public class ApiDocController : Controller
-    //{
-    //    public IActionResult Index()
-    //    {
-    //        string html = "";
-
-    //        System.Reflection.Assembly Asmb = System.Reflection.Assembly.GetExecutingAssembly();
-    //        string strName = Asmb.GetName().Name + ".Pages.index.html";
-    //        System.IO.Stream ManifestStream = Asmb.GetManifestResourceStream(strName);
-
-    //        Response.ContentType = "text/html;charset=utf-8";
-    //        return Content(html);
-    //    }
-    //}
 }
