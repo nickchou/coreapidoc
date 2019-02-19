@@ -32,7 +32,9 @@ namespace CoreApiDoc.Api
         {
             app.Run(async context =>
             {
+                HttpRequest req = context.Request;
                 string html = "";
+                string baseUrl = $"{req.Scheme}://{req.Host}{req.PathBase}{req.Path}";
                 Assembly assembly = Assembly.GetExecutingAssembly();
                 string strName = assembly.GetName().Name + ".Pages.index.html";
                 using (Stream htmlStream = assembly.GetManifestResourceStream(strName))
@@ -41,7 +43,7 @@ namespace CoreApiDoc.Api
                     {
                         using (StreamReader reader = new StreamReader(htmlStream))
                         {
-                            html = reader.ReadToEnd();
+                            html = reader.ReadToEnd().Replace("{currUrl}", baseUrl);
                         }
                     }
                     else
@@ -160,13 +162,16 @@ namespace CoreApiDoc.Api
         /// <returns></returns>
         public string ReflexParamInfos(ParameterInfo[] paras)
         {
-            string str = "{";
+            string str = "";
             foreach (var item in paras)
             {
                 str += $"{this.ReflexParamInfo(item)},";
             }
             str = str.TrimEnd(',');
-            str += "}";
+            if (!(str.StartsWith('{') || str.StartsWith('[')))
+            {
+                str = $"{{{str}}}";
+            }
             return str;
         }
         /// <summary>

@@ -1,13 +1,20 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>orderpublic.api文档工具</title>
+    <title>core api文档生成工具</title>
     <meta charset='UTF-8'>
     <link rel='stylesheet' href='https://unpkg.com/element-ui/lib/theme-chalk/index.css'>
     <script src='https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js'></script>
     <script src='https://nickchou.github.io/script/beautify/v1.8.9/beautify.js'></script>
     <link rel='stylesheet' href='https://nickchou.github.io/script/prismjs/v1.5/prism.css'>
-
+    <script type="text/javascript">
+        var baseURL = "{currUrl}";
+        function getUrlParam(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]); return "";
+        }
+    </script>
 </head>
 
 <body>
@@ -38,15 +45,17 @@
                 <el-button type='primary' @click='btnGetInfo'>GET INFO</el-button>
             </el-col>-->
         </el-row>
-        <el-row style='height: 20px;'></el-row>
+        <el-row style='height: 10px;'></el-row>
+        <el-row style='height: 20px;'><el-col :span='24'>{{currURL}}</el-col></el-row>
+        <el-row style='height: 10px;'></el-row>
         <el-row>
             <el-tabs type='border-card' style=''>
                 <el-tab-pane label='API请求JSON'>
                     <!-- <pre name='code' class='brush: js; gutter: false;'>{{aa}}</pre> -->
-                    <pre><code id='code1' class='language-javascript line-numbers'></code></pre>
+                    <pre><code id='codeReq' class='language-javascript line-numbers'></code></pre>
                 </el-tab-pane>
                 <el-tab-pane label='API响应JSON'>
-                    <pre><code id='code2' class='language-javascript line-numbers'></code></pre>
+                    <pre><code id='codeRes' class='language-javascript line-numbers'></code></pre>
                 </el-tab-pane>
                 <el-tab-pane label='接口参数说明'>待完善...</el-tab-pane>
                 <el-tab-pane label='API接口调试'>待完善...</el-tab-pane>
@@ -55,10 +64,10 @@
     </div>
 
 </body>
-<script src='https://unpkg.com/vue/dist/vue.js'></script>
-<script src='https://unpkg.com/element-ui/lib/index.js'></script>
-<script src='https://unpkg.com/axios/dist/axios.min.js'></script>
-<script>
+<script type="text/javascript" src='https://unpkg.com/vue/dist/vue.js'></script>
+<script type="text/javascript" src='https://unpkg.com/element-ui/lib/index.js'></script>
+<script type="text/javascript" src='https://unpkg.com/axios/dist/axios.min.js'></script>
+<script type="text/javascript">
     new Vue({
         el: '#app',
         data: {
@@ -70,6 +79,7 @@
             selAction: '' /*action选项*/,
             jsonApi: [] /*api总数据*/,
             jsonActions: [] /*action的具体信息*/,
+            currURL:""
         },
         filters: {
             json: function (data) {
@@ -81,7 +91,7 @@
             getApi: function () {
                 var para = new URLSearchParams();
                 para.append('asb', this.selApi);
-                axios.get('/apidoc/getapi?asb=' + this.selApi)
+                axios.get(baseURL +'/getapi?asb=' + this.selApi)
                     .then(resp => {
                         var list = [];
                         var listAss = [];
@@ -93,7 +103,7 @@
                             });
                         });
                         this.opsApi = listAss;
-                        if(this.selApi == ''){
+                        if (this.selApi == '') {
                             this.selApi = listAss[0].value;
                         }
                         /*API接口的*/
@@ -105,7 +115,9 @@
                         });
                         this.jsonApi = resp.data;
                         this.opsCtrl = list;
-                        this.selCtrl = list[0].value;
+                        if (this.selCtrl == '') {
+                            this.selCtrl = list[0].value;
+                        }
                         this.getMethod();
                     }).catch(function (error) {
                         alert(error);
@@ -120,55 +132,40 @@
                             label: key.Name + '-' + key.Desc
                         }
                     });
-                    this.selAction = this.opsAction[0].value;
+                    if (this.selAction == '') {
+                        this.selAction = this.opsAction[0].value;
+                    }
                 } else {
                     /*当api接口中没有方法的时候置空*/
                     this.selAction = '';
                     this.opsAction = [];
+                    this.initCurrUrl();
                 }
+                //重新加载下接口文档
+                this.initParam();
             },
             initParam: function () {
-                $('#code1').html('');//这里要重新初始化一下
-                $('#code2').html('');//这里要重新初始化一下
-                console.log(this.selApi + "," + this.selCtrl + "," + this.selAction);
-                //
-                //var currAction = this.jsonActions.Funs.find(q => q.Name == this.selAction);
+                $('#codeReq').html('');//请求参数要重新初始化一下
+                $('#codeRes').html('');//响应参数要重新初始化一下
                 //ajax获取方法的参数等信息
-                axios.get('/apidoc/getparam?asb=' + this.selApi + '&ctrl=' + this.selCtrl + '&action=' + this.selAction).then(res => {
-                    alert(res.data);
+                //console.log(this.selApi + "," + this.selCtrl + "," + this.selAction);
+                if (this.selAction == "") return;
+                axios.get(baseURL + '/getparam?asb=' + this.selApi + '&ctrl=' + this.selCtrl + '&action=' + this.selAction).then(res => {
+                    if (res.data.Code == 200) {
+                        $('#codeReq').html(this.ToBeautify(res.data.ReqParam));
+                        $('#codeRes').html(this.ToBeautify(res.data.ResParam));
+                        $.getScript('https://nickchou.github.io/script/prismjs/v1.5/prism.js');
+                    } else {
+                        alert(res.data.Msg);
+                    }
                 }).catch(function (error) {
-                    alert('response参数错误' + error);
-                });
-
-                ///*1、生成前端需要的请求参数*/
-                //if (currAction.ReqParams.length == 1) {
-                //    var params1 = new URLSearchParams();
-                //    params1.append('nameSpace', currAction.ReqParams[0].NameSpace);
-                //    params1.append('filePath', currAction.ReqParams[0].FileName);
-                //    axios.post('/travel/orderpublicapi/ApiComm/ModelToJson', params1).then(res => {
-                //        /*在这里格式化js代码*/
-                //        $('#code1').html(this.ToBeautify(res.data));
-                //    }).catch(function (error) {
-                //        alert('response参数错误' + error);
-                //    });
-                //} else if (currAction.ReqParams.length == 0) {
-                //    $('#code1').html('无请求参数...');
-                //} else {
-                //    $('#code1').html('请求参数太多,无法自动生成，请检查...');
-                //}
-                ///*2、生成前端需要的返回参数*/
-                //var params2 = new URLSearchParams();
-                //params2.append('nameSpace', currAction.ResParams.NameSpace);
-                //params2.append('filePath', currAction.ResParams.FileName);
-                //axios.post('/travel/orderpublicapi/ApiComm/ModelToJson', params2).then(res => {
-                //    /*在这里格式化js代码*/
-                //    $('#code2').html(this.ToBeautify(res.data));
-                //}).catch(function (error) {
-                //    alert('response参数错误' + error);
-                //});
-                //$.getScript('https://nickchou.github.io/script/prismjs/v1.5/prism.js', function () {
-                //    console.log('load prism.js');
-                //});
+                    alert('获取参数异常' + error);
+                    });
+                this.initCurrUrl();
+                
+            },
+            initCurrUrl: function () {
+                this.currURL = baseURL + "?asb=" + this.selApi + "&ctrl=" + this.selCtrl + "&action=" + this.selAction;
             },
             ToBeautify: function (json) {
                 if (typeof json == 'object') {
@@ -182,6 +179,10 @@
             }
         },
         mounted() {
+            this.selApi = getUrlParam("asb");
+            this.selCtrl = getUrlParam("ctrl");
+            this.selAction = getUrlParam("action");
+            console.log(this.selApi + "," + this.selCtrl + "," + this.selAction);
             this.getApi();
         },
     });

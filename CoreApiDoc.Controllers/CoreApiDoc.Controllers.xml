@@ -4,9 +4,20 @@
         <name>CoreApiDoc.Controllers</name>
     </assembly>
     <members>
+        <member name="T:CoreApiDoc.Controllers.Baoxian.BaoxianController">
+            <summary>
+            保险相关的控制器
+            </summary>
+        </member>
         <member name="M:CoreApiDoc.Controllers.Baoxian.BaoxianController.Index">
             <summary>
             基类首页方法
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreApiDoc.Controllers.Baoxian.BaoxianController.Index2">
+            <summary>
+            哈哈哈
             </summary>
             <returns></returns>
         </member>
