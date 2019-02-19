@@ -21,6 +21,11 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:CoreApiDoc.Controllers.PayController">
+            <summary>
+            支付相关控制器
+            </summary>
+        </member>
         <member name="M:CoreApiDoc.Controllers.PayController.Index">
             <summary>
             基类首页方法

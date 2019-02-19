@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CoreApiDoc.Controllers
 {
+    /// <summary>
+    /// 支付相关控制器
+    /// </summary>
     public class PayController : Controller
     {
 

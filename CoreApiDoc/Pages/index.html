@@ -50,15 +50,27 @@
         <el-row style='height: 10px;'></el-row>
         <el-row>
             <el-tabs type='border-card' style=''>
-                <el-tab-pane label='API请求JSON'>
-                    <!-- <pre name='code' class='brush: js; gutter: false;'>{{aa}}</pre> -->
+                <el-tab-pane label='请求/响应JSON'>
+                    <div style="font-weight:bold;">请求实体</div>
                     <pre><code id='codeReq' class='language-javascript line-numbers'></code></pre>
-                </el-tab-pane>
-                <el-tab-pane label='API响应JSON'>
+                    <div style="font-weight:bold;">响应实体</div>
                     <pre><code id='codeRes' class='language-javascript line-numbers'></code></pre>
                 </el-tab-pane>
+                <!--<el-tab-pane label='API请求JSON'>
+        <pre><code id='codeReq' class='language-javascript line-numbers'></code></pre>
+    </el-tab-pane>
+    <el-tab-pane label='API响应JSON'>
+        <pre><code id='codeRes' class='language-javascript line-numbers'></code></pre>
+    </el-tab-pane>-->
                 <el-tab-pane label='接口参数说明'>待完善...</el-tab-pane>
-                <el-tab-pane label='API接口调试'>待完善...</el-tab-pane>
+                <el-tab-pane label='API接口调试'>待完善..
+                    <!--<div>
+        <button value=" ">执行</button>
+    </div>
+    <textarea id="txtReq" name="txtReq">
+
+    </textarea>-->
+                </el-tab-pane>
             </el-tabs>
         </el-row>
     </div>
@@ -89,22 +101,20 @@
         },
         methods: {
             getApi: function () {
-                var para = new URLSearchParams();
-                para.append('asb', this.selApi);
                 axios.get(baseURL +'/getapi?asb=' + this.selApi)
                     .then(resp => {
                         var list = [];
-                        var listAss = [];
+                        var listAsb = [];
                         /*API程序集*/
                         resp.data.forEach(element => {
-                            listAss.push({
+                            listAsb.push({
                                 value: element.NameSpace,
                                 label: element.NameSpace
                             });
                         });
-                        this.opsApi = listAss;
+                        this.opsApi = listAsb;
                         if (this.selApi == '') {
-                            this.selApi = listAss[0].value;
+                            this.selApi = listAsb[0].value;
                         }
                         /*API接口的*/
                         resp.data[0].Apis.forEach(e => {
@@ -125,6 +135,8 @@
             },
             getMethod: function () {
                 this.jsonActions = this.jsonApi[0].Apis.find(q => q.Name == this.selCtrl);
+                console.log("getMethod:" + this.selCtrl);
+                console.log(this.jsonActions);
                 if (this.jsonActions.Funs.length > 0) {
                     this.opsAction = this.jsonActions.Funs.map(key => {
                         return {
@@ -154,6 +166,7 @@
                     if (res.data.Code == 200) {
                         $('#codeReq').html(this.ToBeautify(res.data.ReqParam));
                         $('#codeRes').html(this.ToBeautify(res.data.ResParam));
+                        //$("#txtReq").val(res.data.ReqParam);
                         $.getScript('https://nickchou.github.io/script/prismjs/v1.5/prism.js');
                     } else {
                         alert(res.data.Msg);
