@@ -14,6 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CoreApiDoc.Controllers\CoreApiDoc.Controllers.csproj" />
+    <ProjectReference Include="..\CoreApiDoc.Model\CoreApiDoc.Model.csproj" />
     <ProjectReference Include="..\CoreApiDoc\CoreApiDoc.csproj" />
   </ItemGroup>
 

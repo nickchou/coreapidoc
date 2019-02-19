@@ -31,6 +31,8 @@ namespace Microsoft.AspNetCore.Builder
             {
                 //获取网站根目录
                 v1.Map("/getpath", ctrl.GetPath);
+                //获取API参数
+                v1.Map("/getparam", ctrl.GetParam);
                 //获取API接口列表
                 v1.Map("/getapi", ctrl.GetApi);
                 //二级路径没有，必须写在后面，有先后执行顺序

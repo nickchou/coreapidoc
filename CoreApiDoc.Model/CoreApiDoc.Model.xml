@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CoreApiDoc.Model</name>
+    </assembly>
+    <members>
+        <member name="P:CoreApiDoc.Model.Comm.Passenger.Name">
+            <summary>
+            乘客姓名
+            </summary>
+        </member>
+        <member name="P:CoreApiDoc.Model.Comm.Passenger.Age">
+            <summary>
+            乘客年龄
+            </summary>
+        </member>
+        <member name="T:CoreApiDoc.Model.Request.BaseRequest">
+            <summary>
+            通用的返回基类
+            </summary>
+        </member>
+        <member name="P:CoreApiDoc.Model.Request.BaseRequest.Token">
+            <summary>
+            Token
+            </summary>
+        </member>
+        <member name="T:CoreApiDoc.Model.Request.FlightRequest">
+            <summary>
+            提交乘坐飞机的实体
+            </summary>
+        </member>
+        <member name="P:CoreApiDoc.Model.Request.FlightRequest.Passengers">
+            <summary>
+            乘客信息
+            </summary>
+        </member>
+        <member name="T:CoreApiDoc.Model.Response.BaseResponse">
+            <summary>
+            通用的Response
+            </summary>
+        </member>
+        <member name="P:CoreApiDoc.Model.Response.BaseResponse.Status">
+            <summary>
+            请求状态，catch异常时Status=false，由框架控制
+            </summary>
+        </member>
+        <member name="P:CoreApiDoc.Model.Response.BaseResponse.Code">
+            <summary>
+            业务错误代码，Status=true时前端会判断Code值(200=成功)
+            </summary>
+        </member>
+        <member name="P:CoreApiDoc.Model.Response.BaseResponse.Msg">
+            <summary>
+            程序/业务错误信息，发生错误的说明
+            </summary>
+        </member>
+        <member name="P:CoreApiDoc.Model.Response.BaseResponse.FrontMsg">
+            <summary>
+            对客错误消息，不涉及对客默认值即可
+            </summary>
+        </member>
+        <member name="P:CoreApiDoc.Model.Response.BaseResponse.ServerInfo">
+            <summary>
+            接口的一些耗时，ip等信息
+            </summary>
+        </member>
+        <member name="P:CoreApiDoc.Model.Response.BaseResponse`1.Data">
+            <summary>
+            通用数据类型
+            </summary>
+        </member>
+        <member name="P:CoreApiDoc.Model.Response.FlightResponse.Passengers">
+            <summary>
+            返回乘客信息等
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -27,7 +27,7 @@ namespace CoreApiDoc.Service
                 BaseSummary summarySer = new ClassSummary(assembly.ManifestModule.ScopeName);
                 if (assembly != null && assembly.GetTypes() != null && assembly.GetTypes().Length > 0)
                 {
-                    summarySer.LoadFromXMLFile();
+                    summarySer.LoadSummary();
                     //根据第一个类去反射出注释文档
                     //summarySer.LoadFromXMLFile(assembly.GetTypes()[0]);
                 }

@@ -15,6 +15,24 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:CoreApiDoc.Web.Controllers.BaseBController.Test1(System.String,System.Int32,System.Boolean)">
+            <summary>
+            基类首页方法
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreApiDoc.Web.Controllers.BaseBController.Test2(CoreApiDoc.Model.Request.FlightRequest)">
+            <summary>
+            基类首页方法
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreApiDoc.Web.Controllers.BaseBController.Test3(CoreApiDoc.Model.Request.FlightRequest)">
+            <summary>
+            基类首页方法
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:CoreApiDoc.Web.Controllers.BaseController">
             <summary>
             测试基类BaseController的

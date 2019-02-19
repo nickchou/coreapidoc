@@ -14,7 +14,7 @@
     <div id='app'>
         <el-row>
             <el-col :span='5'>
-                <el-select v-model='selApi' filterable disabled placeholder='请选择' style='width:100%;'>
+                <el-select v-model='selApi' filterable placeholder='请选择' style='width:100%;' @change='getApi'>
                     <el-option v-for='item in opsApi' :key='item.value' :label='item.label' :value='item.value'>
                     </el-option>
                 </el-select>
@@ -27,16 +27,16 @@
                 </el-select>
             </el-col>
             <el-col :span='1'>&nbsp;</el-col>
-            <el-col :span='5'>
+            <el-col :span='9'>
                 <el-select v-model='selAction' filterable placeholder='请选择' style='width:100%;' @change='initParam'>
                     <el-option v-for='item in opsAction' :key='item.value' :label='item.label' :value='item.value'>
                     </el-option>
                 </el-select>
             </el-col>
-            <el-col :span='1'>&nbsp;</el-col>
+            <!--<el-col :span='1'>&nbsp;</el-col>
             <el-col :span='3'>
                 <el-button type='primary' @click='btnGetInfo'>GET INFO</el-button>
-            </el-col>
+            </el-col>-->
         </el-row>
         <el-row style='height: 20px;'></el-row>
         <el-row>
@@ -62,24 +62,14 @@
     new Vue({
         el: '#app',
         data: {
-            opsApi: [{
-                value: 'tcgl.netcore.orderpublic.api',
-                label: 'tcgl.netcore.orderpublic.api'
-            }],
-            selApi: '',
-            /*api选择项*/
-            opsCtrl: [],
-            /*api数据源*/
-            selCtrl: '',
-            /*controller选项*/
-            opsAction: [],
-            /*controller数据源*/
-            selAction: '',
-            /*action选项*/
-            jsonApi: [],
-            /*api总数据*/
-            jsonActions: [],
-            /*action的具体信息*/
+            opsApi: [],
+            selApi: '' /*程序集选择项*/,
+            opsCtrl: [] /*api数据源*/,
+            selCtrl: '' /*api选项*/,
+            opsAction: [] /*action数据源*/,
+            selAction: '' /*action选项*/,
+            jsonApi: [] /*api总数据*/,
+            jsonActions: [] /*action的具体信息*/,
         },
         filters: {
             json: function (data) {
@@ -88,55 +78,97 @@
             }
         },
         methods: {
+            getApi: function () {
+                var para = new URLSearchParams();
+                para.append('asb', this.selApi);
+                axios.get('/apidoc/getapi?asb=' + this.selApi)
+                    .then(resp => {
+                        var list = [];
+                        var listAss = [];
+                        /*API程序集*/
+                        resp.data.forEach(element => {
+                            listAss.push({
+                                value: element.NameSpace,
+                                label: element.NameSpace
+                            });
+                        });
+                        this.opsApi = listAss;
+                        if(this.selApi == ''){
+                            this.selApi = listAss[0].value;
+                        }
+                        /*API接口的*/
+                        resp.data[0].Apis.forEach(e => {
+                            list.push({
+                                value: e.Name,
+                                label: e.Name + '-' + e.Desc
+                            });
+                        });
+                        this.jsonApi = resp.data;
+                        this.opsCtrl = list;
+                        this.selCtrl = list[0].value;
+                        this.getMethod();
+                    }).catch(function (error) {
+                        alert(error);
+                    });
+            },
             getMethod: function () {
-                var list = [];
-                this.jsonActions = this.jsonApi.Contorls.find(q => q.Name == this.selCtrl);
-                //console.log(this.jsonActions);
-                this.opsAction = this.jsonActions.Funs.map(key => {
-                    return {
-                        value: key.Name,
-                        label: key.Name
-                    }
-                });
-                this.selAction = this.opsAction[0].value;
+                this.jsonActions = this.jsonApi[0].Apis.find(q => q.Name == this.selCtrl);
+                if (this.jsonActions.Funs.length > 0) {
+                    this.opsAction = this.jsonActions.Funs.map(key => {
+                        return {
+                            value: key.Name,
+                            label: key.Name + '-' + key.Desc
+                        }
+                    });
+                    this.selAction = this.opsAction[0].value;
+                } else {
+                    /*当api接口中没有方法的时候置空*/
+                    this.selAction = '';
+                    this.opsAction = [];
+                }
             },
             initParam: function () {
-                //这里啥也不用做，点按钮的时候再去做
-                //this.jsonActions.Funs.find(q => q.Name == this.selAction);
-            },
-            btnGetInfo: function () {
                 $('#code1').html('');//这里要重新初始化一下
                 $('#code2').html('');//这里要重新初始化一下
-                var currAction = this.jsonActions.Funs.find(q => q.Name == this.selAction);
-                /*1、生成前端需要的请求参数*/
-                if (currAction.ReqParams.length == 1) {
-                    var params1 = new URLSearchParams();
-                    params1.append('nameSpace', currAction.ReqParams[0].NameSpace);
-                    params1.append('filePath', currAction.ReqParams[0].FileName);
-                    axios.post('/travel/orderpublicapi/ApiComm/ModelToJson', params1).then(res => {
-                        /*在这里格式化js代码*/
-                        $('#code1').html(this.ToBeautify(res.data));
-                    }).catch(function (error) {
-                        alert('response参数错误' + error);
-                    });
-                } else if (currAction.ReqParams.length == 0) {
-                    $('#code1').html('无请求参数...');
-                } else {
-                    $('#code1').html('请求参数太多,无法自动生成，请检查...');
-                }
-                /*2、生成前端需要的返回参数*/
-                var params2 = new URLSearchParams();
-                params2.append('nameSpace', currAction.ResParams.NameSpace);
-                params2.append('filePath', currAction.ResParams.FileName);
-                axios.post('/travel/orderpublicapi/ApiComm/ModelToJson', params2).then(res => {
-                    /*在这里格式化js代码*/
-                    $('#code2').html(this.ToBeautify(res.data));
+                console.log(this.selApi + "," + this.selCtrl + "," + this.selAction);
+                //
+                //var currAction = this.jsonActions.Funs.find(q => q.Name == this.selAction);
+                //ajax获取方法的参数等信息
+                axios.get('/apidoc/getparam?asb=' + this.selApi + '&ctrl=' + this.selCtrl + '&action=' + this.selAction).then(res => {
+                    alert(res.data);
                 }).catch(function (error) {
                     alert('response参数错误' + error);
                 });
-                $.getScript('https://nickchou.github.io/script/prismjs/v1.5/prism.js', function () {
-                    console.log('load prism.js');
-                });
+
+                ///*1、生成前端需要的请求参数*/
+                //if (currAction.ReqParams.length == 1) {
+                //    var params1 = new URLSearchParams();
+                //    params1.append('nameSpace', currAction.ReqParams[0].NameSpace);
+                //    params1.append('filePath', currAction.ReqParams[0].FileName);
+                //    axios.post('/travel/orderpublicapi/ApiComm/ModelToJson', params1).then(res => {
+                //        /*在这里格式化js代码*/
+                //        $('#code1').html(this.ToBeautify(res.data));
+                //    }).catch(function (error) {
+                //        alert('response参数错误' + error);
+                //    });
+                //} else if (currAction.ReqParams.length == 0) {
+                //    $('#code1').html('无请求参数...');
+                //} else {
+                //    $('#code1').html('请求参数太多,无法自动生成，请检查...');
+                //}
+                ///*2、生成前端需要的返回参数*/
+                //var params2 = new URLSearchParams();
+                //params2.append('nameSpace', currAction.ResParams.NameSpace);
+                //params2.append('filePath', currAction.ResParams.FileName);
+                //axios.post('/travel/orderpublicapi/ApiComm/ModelToJson', params2).then(res => {
+                //    /*在这里格式化js代码*/
+                //    $('#code2').html(this.ToBeautify(res.data));
+                //}).catch(function (error) {
+                //    alert('response参数错误' + error);
+                //});
+                //$.getScript('https://nickchou.github.io/script/prismjs/v1.5/prism.js', function () {
+                //    console.log('load prism.js');
+                //});
             },
             ToBeautify: function (json) {
                 if (typeof json == 'object') {
@@ -150,24 +182,7 @@
             }
         },
         mounted() {
-            this.selApi = this.opsApi[0].value;
-            axios
-                .get('/travel/orderpublicapi/ApiComm/GetController')
-                .then(resp => {
-                    var list = [];
-                    resp.data.Contorls.forEach(element => {
-                        list.push({
-                            value: element.Name,
-                            label: element.Name
-                        });
-                    });
-                    this.jsonApi = resp.data;
-                    this.opsCtrl = list;
-                    this.selCtrl = list[0].value;
-                    this.getMethod();
-                }).catch(function (error) {
-                    alert(error);
-                });
+            this.getApi();
         },
     });
 </script>

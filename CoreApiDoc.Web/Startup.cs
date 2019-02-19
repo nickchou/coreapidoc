@@ -66,7 +66,7 @@ namespace CoreApiDoc.Web
                 app.UseHsts();
             }
             //指定Controller层的程序集，反射出API接口
-            app.UseCoreApiDoc(provider, "CoreApiDoc.Web");
+            app.UseCoreApiDoc(provider, "CoreApiDoc.Web,CoreApiDoc.Controllers");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

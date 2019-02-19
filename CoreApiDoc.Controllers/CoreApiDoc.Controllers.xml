@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CoreApiDoc.Controllers</name>
+    </assembly>
+    <members>
+        <member name="M:CoreApiDoc.Controllers.Baoxian.BaoxianController.Index">
+            <summary>
+            基类首页方法
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreApiDoc.Controllers.PayController.Index">
+            <summary>
+            基类首页方法
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

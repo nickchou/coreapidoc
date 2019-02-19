@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2048
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreApiDoc", "CoreApiDoc\CoreApiDoc.csproj", "{74A87459-661D-4728-B1E5-958F574C18FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreApiDoc", "CoreApiDoc\CoreApiDoc.csproj", "{74A87459-661D-4728-B1E5-958F574C18FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreApiDoc.Web", "CoreApiDoc.Web\CoreApiDoc.Web.csproj", "{238137D9-F08A-4D79-9074-8DAD46241605}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreApiDoc.Web", "CoreApiDoc.Web\CoreApiDoc.Web.csproj", "{238137D9-F08A-4D79-9074-8DAD46241605}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreApiDoc.Controllers", "CoreApiDoc.Controllers\CoreApiDoc.Controllers.csproj", "{5744D7E7-CE25-46AD-B3CC-7D1405318D22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreApiDoc.Model", "CoreApiDoc.Model\CoreApiDoc.Model.csproj", "{59FEB468-61DA-435B-94FA-3703F7821676}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{238137D9-F08A-4D79-9074-8DAD46241605}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{238137D9-F08A-4D79-9074-8DAD46241605}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{238137D9-F08A-4D79-9074-8DAD46241605}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5744D7E7-CE25-46AD-B3CC-7D1405318D22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5744D7E7-CE25-46AD-B3CC-7D1405318D22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5744D7E7-CE25-46AD-B3CC-7D1405318D22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5744D7E7-CE25-46AD-B3CC-7D1405318D22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59FEB468-61DA-435B-94FA-3703F7821676}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59FEB468-61DA-435B-94FA-3703F7821676}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59FEB468-61DA-435B-94FA-3703F7821676}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59FEB468-61DA-435B-94FA-3703F7821676}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

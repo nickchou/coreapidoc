@@ -47,7 +47,7 @@ namespace CoreApiDoc.Summary
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public Dictionary<string, string> LoadFromXMLFile()
+        public Dictionary<string, string> LoadSummary()
         {
             XmlDocument xmlDocument = new XmlDocument();
             //读取配置summary xml配置文件

@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <AssemblyName>CoreApiDoc.Controllers</AssemblyName>
+    <RootNamespace>CoreApiDoc.Controllers</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>D:\GitPri\coreapidoc\CoreApiDoc.Controllers\CoreApiDoc.Controllers.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.1.0" />
+  </ItemGroup>
+
+</Project>
