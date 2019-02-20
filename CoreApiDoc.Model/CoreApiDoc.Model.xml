@@ -64,6 +64,12 @@
             接口的一些耗时，ip等信息
             </summary>
         </member>
+        <member name="T:CoreApiDoc.Model.Response.BaseResponse`1">
+            <summary>
+            通用的Response
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
         <member name="P:CoreApiDoc.Model.Response.BaseResponse`1.Data">
             <summary>
             通用数据类型

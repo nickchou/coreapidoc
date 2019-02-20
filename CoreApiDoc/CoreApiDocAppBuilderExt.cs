@@ -17,7 +17,7 @@ namespace Microsoft.AspNetCore.Builder
         /// <param name="app"></param>
         /// <param name="ControllerAssemby">Controller层的命名空间</param>
         /// <returns></returns>
-        public static IApplicationBuilder UseCoreApiDoc(this IApplicationBuilder app, IServiceProvider provider, string ControllerAssemby)
+        public static IApplicationBuilder UseCoreApiDoc(this IApplicationBuilder app, string ControllerAssemby)
         {
 
             string[] assembys = ControllerAssemby.Split(',');

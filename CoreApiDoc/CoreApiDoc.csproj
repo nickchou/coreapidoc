@@ -2,6 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <Authors>nickchou</Authors>
+    <Company />
+    <Description>net api生成相应的文档及参数等</Description>
+    <PackageIconUrl></PackageIconUrl>
+    <PackageProjectUrl>https://github.com/nickchou/coreapidoc</PackageProjectUrl>
+    <Copyright>Copyright © nickchou 2019</Copyright>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageReleaseNotes>发布v1.0版本</PackageReleaseNotes>
+    <PackageLicenseUrl>Apache License</PackageLicenseUrl>
+    <Version>1.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

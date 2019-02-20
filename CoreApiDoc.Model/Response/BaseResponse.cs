@@ -31,6 +31,10 @@ namespace CoreApiDoc.Model.Response
         public string ServerInfo { set; get; } = "";
 
     }
+    /// <summary>
+    /// 通用的Response
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class BaseResponse<T> : BaseResponse
     {
         /// <summary>

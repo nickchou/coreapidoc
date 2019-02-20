@@ -81,6 +81,7 @@ namespace CoreApiDoc.Api
         {
             app.Run(async context =>
             {
+
                 HttpRequest req = context.Request;
                 List<string> asbs = new List<string>();
                 if (!string.IsNullOrEmpty(context.Request.Query["asb"].FirstOrDefault()))

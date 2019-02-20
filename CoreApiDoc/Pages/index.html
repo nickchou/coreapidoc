@@ -28,7 +28,7 @@
             </el-col>
             <el-col :span='1'>&nbsp;</el-col>
             <el-col :span='8'>
-                <el-select v-model='selCtrl' filterable placeholder='请选择' style='width:100%;' @change='getMethod'>
+                <el-select v-model='selCtrl' filterable placeholder='请选择' style='width:100%;' @change='getMethod(false)'>
                     <el-option v-for='item in opsCtrl' :key='item.value' :label='item.label' :value='item.value'>
                     </el-option>
                 </el-select>
@@ -63,7 +63,7 @@
         <pre><code id='codeRes' class='language-javascript line-numbers'></code></pre>
     </el-tab-pane>-->
                 <el-tab-pane label='接口参数说明'>待完善...</el-tab-pane>
-                <el-tab-pane label='API接口调试'>待完善..
+                <el-tab-pane label='API接口调试'>待完善...
                     <!--<div>
         <button value=" ">执行</button>
     </div>
@@ -125,15 +125,14 @@
                         });
                         this.jsonApi = resp.data;
                         this.opsCtrl = list;
-                        if (this.selCtrl == '') {
-                            this.selCtrl = list[0].value;
-                        }
-                        this.getMethod();
+                        if (getUrlParam("ctrl") != "") { this.selCtrl = getUrlParam("ctrl"); }
+                        else { this.selCtrl = list[0].value; }
+                        this.getMethod(true);
                     }).catch(function (error) {
                         alert(error);
                     });
             },
-            getMethod: function () {
+            getMethod: function (isLoad) {
                 this.jsonActions = this.jsonApi[0].Apis.find(q => q.Name == this.selCtrl);
                 console.log("getMethod:" + this.selCtrl);
                 console.log(this.jsonActions);
@@ -144,7 +143,10 @@
                             label: key.Name + '-' + key.Desc
                         }
                     });
-                    if (this.selAction == '') {
+                    if (isLoad && getUrlParam("action") != "") {
+                        this.selAction = getUrlParam("action");
+                    }
+                    else {
                         this.selAction = this.opsAction[0].value;
                     }
                 } else {
@@ -193,8 +195,6 @@
         },
         mounted() {
             this.selApi = getUrlParam("asb");
-            this.selCtrl = getUrlParam("ctrl");
-            this.selAction = getUrlParam("action");
             console.log(this.selApi + "," + this.selCtrl + "," + this.selAction);
             this.getApi();
         },

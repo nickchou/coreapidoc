@@ -83,6 +83,13 @@
             学生控制器
             </summary>
         </member>
+        <member name="M:CoreApiDoc.Web.Controllers.StuController.GetStu(CoreApiDoc.Model.Request.FlightRequest)">
+            <summary>
+            获取学生
+            </summary>
+            <param name="service"></param>
+            <returns></returns>
+        </member>
         <member name="T:CoreApiDoc.Web.Controllers.UserController">
             <summary>
             用户处理控制器
@@ -149,7 +156,7 @@
             </summary>
             <param name="services"></param>
         </member>
-        <member name="M:CoreApiDoc.Web.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IHostingEnvironment,System.IServiceProvider)">
+        <member name="M:CoreApiDoc.Web.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IHostingEnvironment)">
             <summary>
             初始化Configure
             </summary>

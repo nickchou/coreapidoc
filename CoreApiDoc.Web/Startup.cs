@@ -54,7 +54,7 @@ namespace CoreApiDoc.Web
         /// <param name="env"></param>
         /// <param name="provider"></param>
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider provider)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -66,7 +66,7 @@ namespace CoreApiDoc.Web
                 app.UseHsts();
             }
             //指定Controller层的程序集，反射出API接口
-            app.UseCoreApiDoc(provider, "CoreApiDoc.Web,CoreApiDoc.Controllers");
+            app.UseCoreApiDoc("CoreApiDoc.Web,CoreApiDoc.Controllers");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
