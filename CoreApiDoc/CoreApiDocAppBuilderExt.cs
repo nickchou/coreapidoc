@@ -21,7 +21,7 @@ namespace Microsoft.AspNetCore.Builder
         {
 
             string[] assembys = ControllerAssemby.Split(',');
-            ApiDocController ctrl = new ApiDocController();
+            ApiDocContext ctrl = new ApiDocContext();
             foreach (var ass in assembys)
             {
                 ctrl.CtrlAssembys.Add(ass);

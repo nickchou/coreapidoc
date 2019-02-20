@@ -16,12 +16,16 @@ namespace CoreApiDoc.Api
     /// <summary>
     /// APIDOC文档生成首页
     /// </summary>
-    public class ApiDocController
+    public class ApiDocContext
     {
         /// <summary>
         /// 控制器程序集名称，用于反射API接口
         /// </summary>
         public List<string> CtrlAssembys { set; get; } = new List<string>();
+        /// <summary>
+        /// ApplicationBuilder
+        /// </summary>
+        public IApplicationBuilder app { set; get; }
 
         #region ApiDoc默认页面
         /// <summary>
