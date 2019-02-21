@@ -1,4 +1,5 @@
 ﻿using CoreApiDoc.Entity;
+using CoreApiDoc.Extension;
 using CoreApiDoc.Summary;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -52,7 +53,7 @@ namespace CoreApiDoc.Service
                                 ApiFunc apiFunc = new ApiFunc()
                                 {
                                     Name = method.Name,
-                                    Desc = summarySer.GetSummary($"M:{classType.FullName}.{method.Name}")
+                                    Desc = summarySer.GetSummary($"M:{classType.FullName}.{method.GetSummaryName()}")
                                 };
                                 apiInfo.Funs.Add(apiFunc);
                             }
@@ -73,5 +74,6 @@ namespace CoreApiDoc.Service
             }
             return apiLib;
         }
+
     }
 }

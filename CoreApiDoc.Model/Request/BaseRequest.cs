@@ -10,7 +10,7 @@ namespace CoreApiDoc.Model.Request
     public class BaseRequest
     {
         /// <summary>
-        /// Token
+        /// Token验证码
         /// </summary>
         public string Token { set; get; }
     }

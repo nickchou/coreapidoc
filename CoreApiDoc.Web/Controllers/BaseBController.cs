@@ -22,7 +22,7 @@ namespace CoreApiDoc.Web.Controllers
             return Content("Hello world");
         }
         /// <summary>
-        /// 基类首页方法
+        /// Test1测试参数集合
         /// </summary>
         /// <returns></returns>
         public IActionResult Test1(string Name, int Age, bool IsStu)
@@ -30,7 +30,7 @@ namespace CoreApiDoc.Web.Controllers
             return Content("Hello world");
         }
         /// <summary>
-        /// 基类首页方法
+        /// Test2测试参数对象
         /// </summary>
         /// <returns></returns>
         public IActionResult Test2(FlightRequest req)
@@ -38,7 +38,7 @@ namespace CoreApiDoc.Web.Controllers
             return Content("Hello world");
         }
         /// <summary>
-        /// 基类首页方法
+        /// Test3测试参数对象+返回对象
         /// </summary>
         /// <returns></returns>
         public FlightResponse Test3(FlightRequest req)
@@ -54,5 +54,23 @@ namespace CoreApiDoc.Web.Controllers
             });
             return res;
         }
+        /// <summary>
+        /// 测试jsonresult
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        public JsonResult Test4(FlightRequest req)
+        {
+            FlightResponse res = new FlightResponse();
+            res.Data = "是我啊";
+            res.Passengers = new List<Model.Comm.Passenger>();
+            res.Passengers.Add(new Model.Comm.Passenger()
+            {
+                Name = "张三",
+                Age = 15
+            });
+            return Json(res);
+        }
+
     }
 }

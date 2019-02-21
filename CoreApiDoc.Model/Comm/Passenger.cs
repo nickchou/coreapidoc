@@ -4,6 +4,9 @@ using System.Text;
 
 namespace CoreApiDoc.Model.Comm
 {
+    /// <summary>
+    /// 乘客对象
+    /// </summary>
     public class Passenger
     {
         /// <summary>

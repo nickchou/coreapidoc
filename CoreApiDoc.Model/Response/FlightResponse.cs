@@ -5,6 +5,9 @@ using System.Text;
 
 namespace CoreApiDoc.Model.Response
 {
+    /// <summary>
+    /// 机票返回信息
+    /// </summary>
     public class FlightResponse : BaseResponse<string>
     {
         /// <summary>

@@ -183,14 +183,14 @@ namespace CoreApiDoc.Api
             {
                 json = "{}";
             }
-            else if (paraFileName == "Microsoft.AspNetCore.Mvc.IActionResult")
+            else if (paraFileName.StartsWith("Microsoft.AspNetCore.Mvc"))
             {
-                json = "{}";
+                json = $"{{ /*{para.ParameterType.FullName}*/ }}";
             }
             else if (paraFileName.StartsWith("System.") || paraFileName.StartsWith("Microsoft."))
             {
                 var (pType, pVal) = ParameterService.GetSystemDefault(para.ParameterType.FullName);
-                json = $"\"{para.Name}\":{(pType == "string" ? "\"\"" : pVal)}";
+                json = $"\"{para.Name}\":{(pType == "string" ? "\"\"" : pVal)} /* 参数 {para.ParameterType.FullName.Replace("System.", "")}*/";
             }
             else
             {

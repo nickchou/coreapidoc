@@ -12,7 +12,8 @@ namespace CoreApiDoc.Summary
             base.SummaryType = new List<string>() { "P" };
             if (type != null)
             {
-                base.SummaryFileURI = Path.ChangeExtension(new Uri(type.Assembly.CodeBase).AbsolutePath, ".xml");
+                base.SummaryFileURI = Path.ChangeExtension(type.Assembly.ManifestModule.Name, ".xml");
+                //base.SummaryFileURI = Path.ChangeExtension(new Uri(type.Assembly.CodeBase).AbsolutePath, ".xml");
             }
         }
     }
