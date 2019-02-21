@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreApiDoc.Web", "CoreApiDo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreApiDoc.Controllers", "CoreApiDoc.Controllers\CoreApiDoc.Controllers.csproj", "{5744D7E7-CE25-46AD-B3CC-7D1405318D22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreApiDoc.Model", "CoreApiDoc.Model\CoreApiDoc.Model.csproj", "{59FEB468-61DA-435B-94FA-3703F7821676}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreApiDoc.Model", "CoreApiDoc.Model\CoreApiDoc.Model.csproj", "{59FEB468-61DA-435B-94FA-3703F7821676}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
