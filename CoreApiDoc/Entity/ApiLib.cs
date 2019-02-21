@@ -14,6 +14,10 @@ namespace CoreApiDoc.Entity
         /// </summary>
         public string NameSpace { set; get; } = "";
         /// <summary>
+        /// API数量
+        /// </summary>
+        public int Count { set; get; }
+        /// <summary>
         /// 类库API接口列表
         /// </summary>
         public List<ApiInfo> Apis { set; get; } = new List<ApiInfo>();

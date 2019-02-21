@@ -109,7 +109,7 @@
                         resp.data.forEach(element => {
                             listAsb.push({
                                 value: element.NameSpace,
-                                label: element.NameSpace
+                                label: element.NameSpace + ' (' + element.Count + ')'
                             });
                         });
                         this.opsApi = listAsb;
@@ -120,7 +120,7 @@
                         resp.data[0].Apis.forEach(e => {
                             list.push({
                                 value: e.Name,
-                                label: e.Name + '-' + e.Desc
+                                label: e.Name + ' - (' + e.Count + ')' + e.Desc
                             });
                         });
                         this.jsonApi = resp.data;
@@ -140,7 +140,7 @@
                     this.opsAction = this.jsonActions.Funs.map(key => {
                         return {
                             value: key.Name,
-                            label: key.Name + '-' + key.Desc
+                            label: key.Name + ' - ' + key.Desc
                         }
                     });
                     if (isLoad && getUrlParam("action") != "") {

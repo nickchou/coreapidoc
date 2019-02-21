@@ -63,19 +63,6 @@ namespace CoreApiDoc.Api
         }
         #endregion
 
-        #region 获取API跟路径
-        public void GetPath(IApplicationBuilder app)
-        {
-            app.Run(async context =>
-            {
-                HttpRequest req = context.Request;
-                string str = $"{req.Scheme}://{req.Host}{req.PathBase}";
-                context.Response.ContentType = "text/html";
-                await context.Response.WriteAsync(str);
-            });
-        }
-        #endregion
-
         #region 获取API接口列表
         /// <summary>
         /// 获取API接口列表
@@ -85,6 +72,7 @@ namespace CoreApiDoc.Api
         {
             app.Run(async context =>
             {
+
 
                 HttpRequest req = context.Request;
                 List<string> asbs = new List<string>();

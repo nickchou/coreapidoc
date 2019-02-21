@@ -19,7 +19,6 @@ namespace Microsoft.AspNetCore.Builder
         /// <returns></returns>
         public static IApplicationBuilder UseCoreApiDoc(this IApplicationBuilder app, string ControllerAssemby)
         {
-
             string[] assembys = ControllerAssemby.Split(',');
             ApiDocContext ctrl = new ApiDocContext();
             foreach (var ass in assembys)
@@ -29,8 +28,6 @@ namespace Microsoft.AspNetCore.Builder
             //方法一
             app.Map("/apidoc", v1 =>
             {
-                //获取网站根目录
-                v1.Map("/getpath", ctrl.GetPath);
                 //获取API参数
                 v1.Map("/getparam", ctrl.GetParam);
                 //获取API接口列表
@@ -38,7 +35,6 @@ namespace Microsoft.AspNetCore.Builder
                 //二级路径没有，必须写在后面，有先后执行顺序
                 v1.Map("", ctrl.Index);
             });
-
             //方法二 ,暂时未测试通过
             //app.UseRouter(new ApiRoute(provider, "apidoc", "Home", "Index"));
             return null;

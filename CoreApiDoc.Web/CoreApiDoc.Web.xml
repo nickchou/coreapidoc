@@ -162,7 +162,6 @@
             </summary>
             <param name="app"></param>
             <param name="env"></param>
-            <param name="provider"></param>
         </member>
     </members>
 </doc>

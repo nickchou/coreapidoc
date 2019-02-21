@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Xml;
 
@@ -51,6 +52,7 @@ namespace CoreApiDoc.Summary
         {
             XmlDocument xmlDocument = new XmlDocument();
             //读取配置summary xml配置文件
+            SummaryFileURI = $"{Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)}/{SummaryFileURI}";
             if (File.Exists(SummaryFileURI))
             {
                 using (StreamReader streamReader = new StreamReader(SummaryFileURI))
@@ -79,10 +81,6 @@ namespace CoreApiDoc.Summary
                             this.Summarys.Add(key, xmlNode.InnerText.Trim());
                         }
                     }
-                    //if (xmlNode.FirstChild.Name == "summary" && (key.Contains(type.FullName) || key.Contains(baseType)))
-                    //{
-                    //    this.Summarys.Add(key, xmlNode.InnerText.Trim());
-                    //}
                 }
             }
             return this.Summarys;

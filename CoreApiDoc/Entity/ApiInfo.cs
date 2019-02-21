@@ -14,6 +14,10 @@ namespace CoreApiDoc.Entity
         /// </summary>
         public string Name { set; get; } = "";
         /// <summary>
+        /// 方法数量
+        /// </summary>
+        public int Count { set; get; }
+        /// <summary>
         /// API接口描述
         /// </summary>
         public string Desc { set; get; } = "";
