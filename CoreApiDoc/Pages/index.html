@@ -164,20 +164,36 @@
                 //ajax获取方法的参数等信息
                 //console.log(this.selApi + "," + this.selCtrl + "," + this.selAction);
                 if (this.selAction == "") return;
-                axios.get(baseURL + '/getparam?asb=' + this.selApi + '&ctrl=' + this.selCtrl + '&action=' + this.selAction).then(res => {
-                    if (res.data.Code == 200) {
-                        $('#codeReq').html(this.ToBeautify(res.data.ReqParam));
-                        $('#codeRes').html(this.ToBeautify(res.data.ResParam));
-                        //$("#txtReq").val(res.data.ReqParam);
-                        $.getScript('https://nickchou.github.io/script/prismjs/v1.5/prism.js');
-                    } else {
-                        alert(res.data.Msg);
+                var o = this;
+                $.get(baseURL + '/getparam?asb=' + this.selApi + '&ctrl=' + this.selCtrl + '&action=' + this.selAction, function (data, status) {
+                    if (status == "success") {
+                        if (data.Code == 200) {
+                            $('#codeReq').html(o.ToBeautify(data.ReqParam));
+                            $('#codeRes').html(o.ToBeautify(data.ResParam));
+                            //$("#txtReq").val(res.data.ReqParam);
+                            $.getScript('https://nickchou.github.io/script/prismjs/v1.5/prism.js');
+                        }
+                        else {
+                            alert(data.Msg)
+                        }
                     }
-                }).catch(function (error) {
-                    alert('获取参数异常' + error);
-                    });
-                this.initCurrUrl();
-                
+                    else {
+                        alert("获取方法参数网络异常")
+                    }
+                });
+                //axios.get(baseURL + '/getparam?asb=' + this.selApi + '&ctrl=' + this.selCtrl + '&action=' + this.selAction).then(res => {
+                //    if (res.data.Code == 200) {
+                //        $('#codeReq').html(this.ToBeautify(res.data.ReqParam));
+                //        $('#codeRes').html(this.ToBeautify(res.data.ResParam));
+                //        //$("#txtReq").val(res.data.ReqParam);
+                //        $.getScript('https://nickchou.github.io/script/prismjs/v1.5/prism.js');
+                //    } else {
+                //        alert(res.data.Msg);
+                //    }
+                //}).catch(function (error) {
+                //    alert('获取参数异常' + error);
+                //});
+                this.initCurrUrl();                
             },
             initCurrUrl: function () {
                 this.currURL = baseURL + "?asb=" + this.selApi + "&ctrl=" + this.selCtrl + "&action=" + this.selAction;

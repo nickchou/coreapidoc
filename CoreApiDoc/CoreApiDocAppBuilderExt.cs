@@ -28,6 +28,8 @@ namespace Microsoft.AspNetCore.Builder
             //方法一
             app.Map("/apidoc", v1 =>
             {
+                //获取Path信息
+                v1.Map("/getpath", ctrl.GetPath);
                 //获取API参数
                 v1.Map("/getparam", ctrl.GetParam);
                 //获取API接口列表

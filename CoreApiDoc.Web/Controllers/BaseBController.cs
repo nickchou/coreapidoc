@@ -24,6 +24,9 @@ namespace CoreApiDoc.Web.Controllers
         /// <summary>
         /// Test1测试参数集合
         /// </summary>
+        /// <param name="Name">姓名</param>
+        /// <param name="Age">性别</param>
+        /// <param name="IsStu">工号</param>
         /// <returns></returns>
         public IActionResult Test1(string Name, int Age, bool IsStu)
         {

@@ -72,8 +72,6 @@ namespace CoreApiDoc.Api
         {
             app.Run(async context =>
             {
-
-
                 HttpRequest req = context.Request;
                 List<string> asbs = new List<string>();
                 if (!string.IsNullOrEmpty(context.Request.Query["asb"].FirstOrDefault()))
@@ -238,5 +236,19 @@ namespace CoreApiDoc.Api
             return mi;
         }
         #endregion
+
+        public void GetPath(IApplicationBuilder app)
+        {
+            app.Run(async context =>
+            {
+                HttpRequest req = context.Request;
+                string html = "";
+                html += $"<br/>[BaseURL:{req.Scheme}://{req.Host}{req.PathBase}{req.Path}]";
+                html += $"<br/>[Assembly.Location:{Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)}]";
+
+                context.Response.ContentType = "text/html;charset=utf-8";
+                await context.Response.WriteAsync(html);
+            });
+        }
     }
 }

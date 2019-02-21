@@ -74,16 +74,30 @@ namespace CoreApiDoc.Summary
                         //基类的summary属性也要的（如果类继承了好几层基类，可能summary拿不到，mark一下）
                         if (CurrType != null && (key.Contains(CurrType.FullName) || key.Contains(CurrType.BaseType?.FullName)))
                         {
-                            this.Summarys.Add(key, xmlNode.InnerText.Trim());
+                            this.Summarys.Add(key, GetSummaryByNodes(xmlNode));
                         }
                         else
                         {
-                            this.Summarys.Add(key, xmlNode.InnerText.Trim());
+                            this.Summarys.Add(key, GetSummaryByNodes(xmlNode));
                         }
                     }
                 }
             }
             return this.Summarys;
+        }
+        private string GetSummaryByNodes(XmlNode xmlNode)
+        {
+            string val = "";
+            if (xmlNode != null)
+            {
+                var ss = xmlNode.SelectNodes("summary");
+                var ps = xmlNode.SelectNodes("param");
+                if (ss.Count > 0)
+                {
+                    val = ss.Item(0).InnerText.Trim();
+                }
+            }
+            return val;
         }
         #endregion
     }
