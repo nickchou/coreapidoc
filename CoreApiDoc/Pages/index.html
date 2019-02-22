@@ -134,8 +134,8 @@
             },
             getMethod: function (isLoad) {
                 this.jsonActions = this.jsonApi[0].Apis.find(q => q.Name == this.selCtrl);
-                console.log("getMethod:" + this.selCtrl);
-                console.log(this.jsonActions);
+                //console.log("getMethod:" + this.selCtrl);
+                //console.log(this.jsonActions);
                 if (this.jsonActions.Funs.length > 0) {
                     this.opsAction = this.jsonActions.Funs.map(key => {
                         return {

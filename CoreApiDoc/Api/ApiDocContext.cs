@@ -181,6 +181,10 @@ namespace CoreApiDoc.Api
             {
                 json = "{}";
             }
+            else if (string.IsNullOrEmpty(paraFileName))
+            {
+                json = $"{{ /*{para.ParameterType.Name}*/ }}";
+            }
             else if (paraFileName.StartsWith("Microsoft.AspNetCore.Mvc"))
             {
                 json = $"{{ /*{para.ParameterType.FullName}*/ }}";

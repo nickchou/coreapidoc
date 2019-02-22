@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -47,7 +48,8 @@ namespace CoreApiDoc.Service
                         {
                             var apiObj = assembly.GetType(classType.FullName);
                             //加载Controller下面的方法（过滤父类和非public的）
-                            foreach (var method in apiObj.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
+                            //!m.IsSpecialName 过滤系统自动生成的  set_xxx()  get_xxx()等
+                            foreach (var method in apiObj.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly).Where(m => !m.IsSpecialName))
                             {
                                 apiInfo.Count++;
                                 ApiFunc apiFunc = new ApiFunc()
