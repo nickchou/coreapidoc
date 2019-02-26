@@ -4,6 +4,9 @@ using System.Text;
 
 namespace CoreApiDoc.Entity
 {
+    /// <summary>
+    /// 根据方法返回请求，相应参数等数据
+    /// </summary>
     public class MethodInfoResponse
     {
         /// <summary>
@@ -22,5 +25,13 @@ namespace CoreApiDoc.Entity
         /// 返回
         /// </summary>
         public string ResParam { set; get; } = "";
+        /// <summary>
+        /// 请求参数集合
+        /// </summary>
+        public List<Field> ReqFields { set; get; } = new List<Field>();
+        /// <summary>
+        /// 返回参数
+        /// </summary>
+        public List<Field> ResFields { set; get; } = new List<Field>();
     }
 }

@@ -51,9 +51,9 @@
         <el-row>
             <el-tabs type='border-card' style=''>
                 <el-tab-pane label='请求/响应JSON'>
-                    <div style="font-weight:bold;">请求实体</div>
+                    <el-tag>请求参数Json：</el-tag>
                     <pre><code id='codeReq' class='language-javascript line-numbers'></code></pre>
-                    <div style="font-weight:bold;">响应实体</div>
+                    <el-tag>返回参数Json：</el-tag>
                     <pre><code id='codeRes' class='language-javascript line-numbers'></code></pre>
                 </el-tab-pane>
                 <!--<el-tab-pane label='API请求JSON'>
@@ -62,7 +62,34 @@
     <el-tab-pane label='API响应JSON'>
         <pre><code id='codeRes' class='language-javascript line-numbers'></code></pre>
     </el-tab-pane>-->
-                <el-tab-pane label='接口参数说明'>待完善...</el-tab-pane>
+                <el-tab-pane label='接口参数说明'>
+                    <el-tag>请求参数说明：</el-tag>
+                    <template>
+                        <el-table :data="reqFieldDocs" stripe style="width: 100%">
+                            <el-table-column prop="date" label="名称">
+                            </el-table-column>
+                            <el-table-column prop="name" label="类型">
+                            </el-table-column>
+                            <el-table-column prop="name" label="是否必填">
+                            </el-table-column>
+                            <el-table-column prop="address" label="说明">
+                            </el-table-column>
+                        </el-table>
+                    </template>
+                    <el-tag>返回参数说明：</el-tag>
+                    <template>
+                        <el-table :data="resFieldDocs" stripe style="width: 100%">
+                            <el-table-column prop="date" label="名称">
+                            </el-table-column>
+                            <el-table-column prop="name" label="类型">
+                            </el-table-column>
+                            <el-table-column prop="name" label="是否必填">
+                            </el-table-column>
+                            <el-table-column prop="address" label="说明">
+                            </el-table-column>
+                        </el-table>
+                    </template>
+                </el-tab-pane>
                 <el-tab-pane label='API接口调试'>待完善...
                     <!--<div>
         <button value=" ">执行</button>

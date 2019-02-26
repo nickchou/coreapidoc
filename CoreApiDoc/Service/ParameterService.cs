@@ -1,4 +1,5 @@
-﻿using CoreApiDoc.Summary;
+﻿using CoreApiDoc.Entity;
+using CoreApiDoc.Summary;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -83,6 +84,77 @@ namespace CoreApiDoc.Service
                     writer.WriteEndObject();
                 }
             }
+        }
+
+        public static List<Field> GetPropertyInfo(object obj, Field f, int level = 0)
+        {
+            List<Field> fs = new List<Field>();
+            BaseSummary summary = new PropertiesSummary(obj.GetType());
+            //加载类对应的comment信息
+            Dictionary<string, string> commentValues = summary.LoadSummary();
+            //遍历属性
+            foreach (PropertyInfo p in obj.GetType().GetProperties())
+            {
+                Type pt = p.PropertyType;
+                //属性值对应summary的key
+                string key = $"{p.MemberType.ToString()[0]}:{p.DeclaringType.FullName}.{p.Name}";
+                //获取属性的注释
+                string propertyComment = commentValues.ContainsKey(key) ? commentValues[key] : "";
+
+                //赋值
+                f.Name = p.Name;
+                f.TypeName = pt.FullName;
+                f.Desc = propertyComment;
+                f.Level = level;
+                f.Required = false;
+
+                //(基元类型)IsPrimitive=Boolean,Byte,SByte,Int16,UInt16,Int32,UInt32,Int64,UInt64,Char,Double,Single
+                if (pt.IsPrimitive || pt.IsValueType || pt == typeof(string))
+                {
+
+                }
+                else if (pt.IsConstructedGenericType)
+                {
+                    //获取泛型中具体的对象类型，并创建对应的反射
+                    Match ma = Regex.Match(p.PropertyType.AssemblyQualifiedName, @"System\.Collections\.Generic\.List`?[\d]*\[\[([\w\\d.]+),\s*([\w\\d.]+)", RegexOptions.IgnoreCase);
+                    f.Name = p.Name;
+                    //如果泛型里的类型是系统类型，如string/datetime/int等，把注释加在字段注释里
+                    if (ma.Success && ma.Groups[1].Value.StartsWith("System"))
+                    {
+                        f.TypeName = $"List<{ma.Groups[1].Value}>";
+                    }
+                    if (ma.Success)
+                    {
+                        if (ma.Groups[1].Value.StartsWith("System"))
+                        {
+                            //可能存在List<int>、List<string>的情况,集合里面的反射不出来，先用case判断吧
+                            var (pType, pVal) = GetSystemDefault(ma.Groups[1].Value);
+                            //writer.WriteValue(pType == "string" ? "" : pVal);
+                        }
+                        else
+                        {
+                            //不是系统类型默认是对象                            
+                            Assembly assembly = Assembly.Load(ma.Groups[2].Value);
+                            object o = assembly.CreateInstance(ma.Groups[1].Value);
+                            //创建对象的实例后递归获取
+                            GetPropertyInfo(o, f, level++);
+                            //WritePropertyByType(o, writer);
+                            //writer.WriteEndObject();
+                        }
+                    }
+                }
+                else if (pt.IsClass)
+                {
+                    //f.Name = p.Name;
+                    //f.TypeName = pt.FullName;
+                    //f.Desc = propertyComment;
+                    //f.Level = level;
+                    //f.Required = false;
+                    object o = p.PropertyType.Assembly.CreateInstance(p.PropertyType.FullName);
+                    f.SubFields = GetPropertyInfo(o, f, level++);
+                }
+            }
+            return fs;
         }
         public static (string pType, object pVal) GetSystemDefault(string name)
         {
