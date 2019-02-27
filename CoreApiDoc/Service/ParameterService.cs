@@ -3,6 +3,7 @@ using CoreApiDoc.Summary;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -20,7 +21,7 @@ namespace CoreApiDoc.Service
             //加载类对应的comment信息
             Dictionary<string, string> commentValues = summary.LoadSummary();
             //遍历属性
-            foreach (PropertyInfo p in obj.GetType().GetProperties())
+            foreach (PropertyInfo p in obj.GetType().GetProperties().OrderBy(p => p.MetadataToken))
             {
                 Type pt = p.PropertyType;
                 //属性值对应summary的key
@@ -86,27 +87,29 @@ namespace CoreApiDoc.Service
             }
         }
 
-        public static List<Field> GetPropertyInfo(object obj, Field f, int level = 0)
+        public static void GetPropertyInfo(object obj, List<Field> fs, int level = 0)
         {
-            List<Field> fs = new List<Field>();
             BaseSummary summary = new PropertiesSummary(obj.GetType());
             //加载类对应的comment信息
             Dictionary<string, string> commentValues = summary.LoadSummary();
-            //遍历属性
-            foreach (PropertyInfo p in obj.GetType().GetProperties())
+            //遍历属性,并按照MetadataToken进行排序
+            foreach (PropertyInfo p in obj.GetType().GetProperties().OrderBy(p => p.MetadataToken))
             {
                 Type pt = p.PropertyType;
                 //属性值对应summary的key
                 string key = $"{p.MemberType.ToString()[0]}:{p.DeclaringType.FullName}.{p.Name}";
                 //获取属性的注释
                 string propertyComment = commentValues.ContainsKey(key) ? commentValues[key] : "";
-
-                //赋值
-                f.Name = p.Name;
-                f.TypeName = pt.FullName;
-                f.Desc = propertyComment;
-                f.Level = level;
-                f.Required = false;
+                Field f = new Field()
+                {
+                    //赋值
+                    Name = p.Name,
+                    TypeName = pt.FullName,
+                    Desc = propertyComment,
+                    Level = level,
+                    Required = false
+                };
+                fs.Add(f);
 
                 //(基元类型)IsPrimitive=Boolean,Byte,SByte,Int16,UInt16,Int32,UInt32,Int64,UInt64,Char,Double,Single
                 if (pt.IsPrimitive || pt.IsValueType || pt == typeof(string))
@@ -117,14 +120,11 @@ namespace CoreApiDoc.Service
                 {
                     //获取泛型中具体的对象类型，并创建对应的反射
                     Match ma = Regex.Match(p.PropertyType.AssemblyQualifiedName, @"System\.Collections\.Generic\.List`?[\d]*\[\[([\w\\d.]+),\s*([\w\\d.]+)", RegexOptions.IgnoreCase);
-                    f.Name = p.Name;
+                    //f.Name = p.Name;
                     //如果泛型里的类型是系统类型，如string/datetime/int等，把注释加在字段注释里
-                    if (ma.Success && ma.Groups[1].Value.StartsWith("System"))
-                    {
-                        f.TypeName = $"List<{ma.Groups[1].Value}>";
-                    }
                     if (ma.Success)
                     {
+                        f.TypeName = $"List<{ma.Groups[1].Value}>";
                         if (ma.Groups[1].Value.StartsWith("System"))
                         {
                             //可能存在List<int>、List<string>的情况,集合里面的反射不出来，先用case判断吧
@@ -137,24 +137,18 @@ namespace CoreApiDoc.Service
                             Assembly assembly = Assembly.Load(ma.Groups[2].Value);
                             object o = assembly.CreateInstance(ma.Groups[1].Value);
                             //创建对象的实例后递归获取
-                            GetPropertyInfo(o, f, level++);
-                            //WritePropertyByType(o, writer);
-                            //writer.WriteEndObject();
+                            //GetPropertyInfo(o, f.SubFields, level + 1); //如果要用字对象的方式，换这个
+                            GetPropertyInfo(o, fs, level + 1);
                         }
                     }
                 }
                 else if (pt.IsClass)
                 {
-                    //f.Name = p.Name;
-                    //f.TypeName = pt.FullName;
-                    //f.Desc = propertyComment;
-                    //f.Level = level;
-                    //f.Required = false;
                     object o = p.PropertyType.Assembly.CreateInstance(p.PropertyType.FullName);
-                    f.SubFields = GetPropertyInfo(o, f, level++);
+                    //GetPropertyInfo(o, f.SubFields, level + 1); //如果要用字对象的方式，换这个
+                    GetPropertyInfo(o, fs, level + 1);
                 }
             }
-            return fs;
         }
         public static (string pType, object pVal) GetSystemDefault(string name)
         {

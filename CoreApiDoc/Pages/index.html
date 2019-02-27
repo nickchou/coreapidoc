@@ -65,27 +65,30 @@
                 <el-tab-pane label='接口参数说明'>
                     <el-tag>请求参数说明：</el-tag>
                     <template>
-                        <el-table :data="reqFieldDocs" stripe style="width: 100%">
-                            <el-table-column prop="date" label="名称">
+                        <el-table :data="reqFieldDocs" border stripe style="width: 100%;margin-top:10px;">
+                            <el-table-column label="序号" type="index" align="center" show-overflow-tooltip width="50px">
                             </el-table-column>
-                            <el-table-column prop="name" label="类型">
+                            <el-table-column prop="Name" label="名称">                                
                             </el-table-column>
-                            <el-table-column prop="name" label="是否必填">
+                            <el-table-column prop="TypeName" label="类型">
                             </el-table-column>
-                            <el-table-column prop="address" label="说明">
+                            <!--<el-table-column prop="Required" label="是否必填">
+        </el-table-column>-->
+                            <el-table-column prop="Desc" label="说明">
                             </el-table-column>
                         </el-table>
                     </template>
-                    <el-tag>返回参数说明：</el-tag>
+                    <el-tag style="margin-top:10px;">返回参数说明：</el-tag>
                     <template>
-                        <el-table :data="resFieldDocs" stripe style="width: 100%">
-                            <el-table-column prop="date" label="名称">
+                        <el-table :data="resFieldDocs" border stripe style="width: 100%;margin-top:10px;">
+                            <el-table-column label="序号" type="index" align="center" show-overflow-tooltip width="50px">
                             </el-table-column>
-                            <el-table-column prop="name" label="类型">
+                            <el-table-column prop="Name" label="名称" :formatter="getFieldName">
+                               
                             </el-table-column>
-                            <el-table-column prop="name" label="是否必填">
+                            <el-table-column prop="TypeName" label="类型">
                             </el-table-column>
-                            <el-table-column prop="address" label="说明">
+                            <el-table-column prop="Desc" label="说明">
                             </el-table-column>
                         </el-table>
                     </template>
@@ -118,7 +121,9 @@
             selAction: '' /*action选项*/,
             jsonApi: [] /*api总数据*/,
             jsonActions: [] /*action的具体信息*/,
-            currURL:""
+            currURL: "",
+            reqFieldDocs: [], /*生成请求参数文档*/
+            resFieldDocs: []  /*生成相应参数文档*/
         },
         filters: {
             json: function (data) {
@@ -197,7 +202,9 @@
                         if (data.Code == 200) {
                             $('#codeReq').html(o.ToBeautify(data.ReqParam));
                             $('#codeRes').html(o.ToBeautify(data.ResParam));
-                            //$("#txtReq").val(res.data.ReqParam);
+                            o.reqFieldDocs = data.ReqFields;
+                            o.resFieldDocs = data.ResFields;
+                            /*重新加载代码样式*/
                             $.getScript('https://nickchou.github.io/script/prismjs/v1.5/prism.js');
                         }
                         else {
@@ -234,7 +241,19 @@
                     'indent_char': '\t'
                 });
                 return strFormat;
-            }
+            },
+            getFieldName: function (row, column) {
+                /*字段名加一个假的层级关系,row是行数据，column是列属性*/
+                var fval = "";
+                if (row.Level > 0) {
+                    for (var i = 0; i < row.Level; i++) {
+                        if (i == 0) fval += "┗━";
+                        else fval += "━";
+                    }
+                }
+                fval += "  " + row[column.property];
+                return fval;
+            }       
         },
         mounted() {
             this.selApi = getUrlParam("asb");

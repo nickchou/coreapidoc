@@ -128,6 +128,10 @@ namespace CoreApiDoc.Api
                         //获取返回参数
                         string resStr = this.ReflexParamInfo(mi.ReturnParameter);
                         res.ResParam = resStr;
+                        //获取请求实体
+                        res.ReqFields = this.GetReqMethodField(mi.GetParameters());
+                        //获取相应实体
+                        res.ResFields = this.GetResMethodField(mi.ReturnParameter);
                         res.Code = 200;
                         res.Msg = "请求成功";
                     }
@@ -243,22 +247,23 @@ namespace CoreApiDoc.Api
         #endregion
 
         #region 反射方法的参数实体
-        public List<Field> GetResMethodField(ParameterInfo[] paras)
+        public List<Field> GetReqMethodField(ParameterInfo[] paras)
         {
             List<Field> fields = new List<Field>();
             foreach (var item in paras)
             {
-                Field f = this.GetReqMethodField(item);
-                if (f != null)
-                {
-                    fields.Add(f);
-                }
+                List<Field> fs = this.GetResMethodField(item);
+                fields.AddRange(fs);
+                //if (f != null)
+                //{
+                //    fields.Add(f);
+                //}
             }
             return fields;
         }
-        public Field GetReqMethodField(ParameterInfo para)
+        public List<Field> GetResMethodField(ParameterInfo para)
         {
-            Field f = null;
+            List<Field> fs = new List<Field>();
             if (para == null) return null;
             string paraAssemby = para.ParameterType.Assembly.FullName;
             string paraFileName = para.ParameterType.FullName ?? "";
@@ -268,25 +273,27 @@ namespace CoreApiDoc.Api
             }
             else if (paraFileName.StartsWith("System.") || paraFileName.StartsWith("Microsoft."))
             {
-                f.Name = para.Name;
-                f.TypeName = para.ParameterType.FullName;
-                f.Level = 0;
-                f.Required = false;
-                f.Desc = "";//此注释要读取方法写.xml
+                fs.Add(new Field()
+                {
+                    Name = para.Name,
+                    TypeName = para.ParameterType.FullName,
+                    Level = 0,
+                    Required = false,
+                    Desc = "" //此注释要读取方法写.xml
+                });
             }
             else
             {
-                f = new Field();
                 //反射出参数的对象(如果参数是对象的话)
                 Assembly assembly = Assembly.Load(paraAssemby);
                 var obj = assembly.CreateInstance(paraFileName);
                 //获取对象的属性
-                ParameterService.GetPropertyInfo(obj, f);
+                ParameterService.GetPropertyInfo(obj, fs, 0);
             }
-            return f;
+            return fs;
         }
 
-        #endregion 
+        #endregion
 
         public void GetPath(IApplicationBuilder app)
         {
