@@ -68,7 +68,7 @@
                         <el-table :data="reqFieldDocs" border stripe style="width: 100%;margin-top:10px;">
                             <el-table-column label="序号" type="index" align="center" show-overflow-tooltip width="50px">
                             </el-table-column>
-                            <el-table-column prop="Name" label="名称">                                
+                            <el-table-column prop="Name" label="名称" :formatter="getFieldName">                                
                             </el-table-column>
                             <el-table-column prop="TypeName" label="类型">
                             </el-table-column>
@@ -84,7 +84,6 @@
                             <el-table-column label="序号" type="index" align="center" show-overflow-tooltip width="50px">
                             </el-table-column>
                             <el-table-column prop="Name" label="名称" :formatter="getFieldName">
-                               
                             </el-table-column>
                             <el-table-column prop="TypeName" label="类型">
                             </el-table-column>
