@@ -21,7 +21,8 @@ namespace CoreApiDoc.Web.Controllers
         /// <returns></returns>
         public IActionResult Index()
         {
-            return View();
+            return Redirect("apidoc");
+            //return View();
         }
         /// <summary>
         /// 关于我们的页面，用于呈现联系方式等等

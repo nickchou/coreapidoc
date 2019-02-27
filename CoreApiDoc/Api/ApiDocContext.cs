@@ -1,5 +1,6 @@
 ﻿using CoreApiDoc.Entity;
 using CoreApiDoc.Service;
+using CoreApiDoc.Summary;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -104,7 +105,7 @@ namespace CoreApiDoc.Api
         }
         #endregion
 
-        #region 获取指定方法的参数
+        #region 获取指定方法的Json参数
         public void GetParam(IApplicationBuilder app)
         {
             app.Run(async context =>
@@ -127,6 +128,10 @@ namespace CoreApiDoc.Api
                         //获取返回参数
                         string resStr = this.ReflexParamInfo(mi.ReturnParameter);
                         res.ResParam = resStr;
+                        //获取请求实体
+                        res.ReqFields = this.GetReqMethodField(mi.GetParameters());
+                        //获取相应实体
+                        res.ResFields = this.GetResMethodField(mi.ReturnParameter);
                         res.Code = 200;
                         res.Msg = "请求成功";
                     }
@@ -239,6 +244,55 @@ namespace CoreApiDoc.Api
             }
             return mi;
         }
+        #endregion
+
+        #region 反射方法的参数实体
+        public List<Field> GetReqMethodField(ParameterInfo[] paras)
+        {
+            List<Field> fields = new List<Field>();
+            foreach (var item in paras)
+            {
+                List<Field> fs = this.GetResMethodField(item);
+                fields.AddRange(fs);
+                //if (f != null)
+                //{
+                //    fields.Add(f);
+                //}
+            }
+            return fields;
+        }
+        public List<Field> GetResMethodField(ParameterInfo para)
+        {
+            List<Field> fs = new List<Field>();
+            if (para == null) return null;
+            string paraAssemby = para.ParameterType.Assembly.FullName;
+            string paraFileName = para.ParameterType.FullName ?? "";
+            if (paraFileName == "System.Void" || string.IsNullOrEmpty(paraFileName) || paraFileName.StartsWith("Microsoft.AspNetCore.Mvc"))
+            {
+                return null;
+            }
+            else if (paraFileName.StartsWith("System.") || paraFileName.StartsWith("Microsoft."))
+            {
+                fs.Add(new Field()
+                {
+                    Name = para.Name,
+                    TypeName = para.ParameterType.FullName,
+                    Level = 0,
+                    Required = false,
+                    Desc = "" //此注释要读取方法写.xml
+                });
+            }
+            else
+            {
+                //反射出参数的对象(如果参数是对象的话)
+                Assembly assembly = Assembly.Load(paraAssemby);
+                var obj = assembly.CreateInstance(paraFileName);
+                //获取对象的属性
+                ParameterService.GetPropertyInfo(obj, fs, 0);
+            }
+            return fs;
+        }
+
         #endregion
 
         public void GetPath(IApplicationBuilder app)
